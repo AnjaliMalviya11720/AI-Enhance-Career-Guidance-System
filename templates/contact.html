@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+{% load static %}
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar ul li {
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        background-image: url("{% static 'Homepagw.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .contact-container {
+        background-color: rgba(255, 255, 255, 0.8); /* Transparent white */
+        border-radius: 20px;
+        padding: 20px;
+        width: 100%;
+        max-width: 500px; /* Decreased width */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        margin-top: 100px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 26px; /* Adjusted font size */
+        font-weight: bold;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 14px; /* Adjusted font size */
+        color: black;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .input-group {
+        position: relative;
+        margin: 15px 0;
+        border-bottom: 2px solid black;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: black;
+        pointer-events: none;
+        transition: 0.5s;
+    }
+
+    .input-group input,
+    .input-group textarea {
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
+        color: black;
+        padding: 0 5px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .input-group textarea {
+        height: 120px;
+    }
+
+    .input-group input:focus~label,
+    .input-group input:valid~label,
+    .input-group textarea:focus~label {
+        top: -5px;
+    }
+
+    .contact-form button {
+        position: relative;
+        width: 100%;
+        height: 40px;
+        background-color: black;
+        font-size: 16px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 30px;
+        border: none;
+        outline: none;
+        margin-top: 10px;
+    }
+
+    .contact-form button:hover {
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .contact-info {
+        margin-top: 40px;
+        text-align: left;
+        font-size: 16px;
+        color: black;
+    }
+
+    .contact-info h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: black;
+    }
+
+    .contact-info p {
+        color: black;
+    }
+</style>
+
+<div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>If you have any questions or need further information, feel free to reach out to us!</p>
+
+    <form method="POST" action="javascript:void(0);" class="contact-form" id="contactForm">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="text" id="name" name="name" required>
+            <label for="name">Your Name</label>
+        </div>
+
+        <div class="input-group">
+            <input type="email" id="email" name="email" required>
+            <label for="email">Your Email</label>
+        </div>
+
+        <div class="input-group">
+            <textarea id="message" name="message" rows="6" required></textarea>
+            <label for="message">Your Message</label>
+        </div>
+
+        <button type="submit" id="sendMessageButton">Send Message</button>
+    </form>
+
+    <div class="contact-info">
+        <h3>Contact Information</h3>
+        <p>Email: shrutitiwari4618@gmail.com</p>
+        <p>Phone: +91 9302582603</p>
+        <p>Address: Sagar Institute of Science & Technology Gandhi Nagar ,Bhopal </p>
+    </div>
+</div>
+
+<script>
+    document.getElementById("sendMessageButton").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var message = document.getElementById("message").value;
+
+        var subject = "Contact Us - Message from " + name;
+        var body = "Name: " + name + "%0AEmail: " + email + "%0AMessage: " + message;
+
+        // Use the email entered by the user as the "to" address
+        var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+
+        window.location.href = mailtoLink; // Opens the user's default email client
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+{% load static %}
+
+{%block title%}Chatbot{%endblock title%}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="chat-container">
+    <div class="chat-header">
+        <h3>Path Guide</h3>
+    </div>
+    <div class="chat-messages">
+        <!-- Dynamic Chat Messages -->
+        {% for message in messages %}
+            <div class="message {% if message.sender == 'User' %}user-message{% else %}bot-message{% endif %}">
+                <div class="message-icon">
+                    {% if message.sender == 'User' %}
+                        <img src="{% static 'user.png' %}" alt="User" />
+                    {% else %}
+                        <img src="{% static 'chat.png' %}" alt="Bot" />
+                    {% endif %}
+                </div>
+                <div class="message-text">{{ message.text }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="chat-input">
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            <input 
+                type="text" 
+                name="user_input" 
+                placeholder="Type your message here..." 
+                required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url("{% static 'Homepagw.png' %}");
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar ul li {
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+    }
+
+    /* Transparent footer styling */
+    .footer {
+        background-color: rgba(0, 0, 0, 0.2); /* Same transparent black background */
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: auto; /* Ensures footer is pushed to the bottom */
+    }
+
+    .footer .footer-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 5px 15px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .footer .footer-links a:hover {
+        color: #ffcc00;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Responsive layout adjustments */
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .navbar ul {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .footer .footer-links {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+
+    .chat-container {
+        
+        width: 700px; /* Fixed container width */
+        height: 80%; /* Fixed container height */
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 11px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-header {
+        background: white;
+        color: black;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .chat-messages {
+        padding: 10px;
+        flex-grow: 1;
+        overflow-y: auto; /* Enables scrolling for messages */
+        border: 1px black solid;
+        margin-left: 3%;
+        margin-right: 3%;
+        border-radius: 5%;
+        height: calc(100% - 120px); /* Dynamic height for messages */
+    }
+
+    .message {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+
+    .message-icon img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .user-message {
+        align-self: flex-end;
+        justify-content: flex-end;
+    }
+
+    .user-message .message-icon img {
+        filter: invert(100%);
+    }
+
+    .user-message .message-text {
+        background: #070707be;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 15px;
+        max-width: 60%;
+    }
+
+    .bot-message {
+        align-self: flex-start;
+    }
+
+    .bot-message .message-icon img {
+        filter: invert(100%);
+    }
+
+    .bot-message .message-text {
+        background: #f1f1f1;
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 15px;
+        max-width: 70%;
+    }
+
+    .chat-input {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        background: #f9f9f9;
+        position: relative;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+        font-size: 16px;
+        width: 570px; /* Leaves space for the button */
+        margin-right: 10px; /* Space between input and button */
+    }
+
+    button {
+        background: #111111;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 11px 15px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1a1919a2;
+        color: #111111;
+    }
+</style>
+{% endblock %}

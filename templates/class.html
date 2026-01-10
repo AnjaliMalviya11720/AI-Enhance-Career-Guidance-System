@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}  <!-- Add this line to load the static tag -->
+
+{% block title %}Class Page{% endblock title %}
+
+{% block body %}
+
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar ul li {
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+
+    /* General Reset */
+    body {
+        font-family: 'Arial', sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        color: white;
+        background: linear-gradient(135deg, #79a7d3, #b29274);
+        gap: 50px;
+        padding-top: 50px;
+        position: relative;
+        overflow: hidden; /* Prevent animation overflow */
+    }
+    
+    h1, h2 {
+        color: #222;
+        transition: 0.5s;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    /* Flex container for content */
+    .content-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap; /* Prevent wrapping to the next line */
+        gap: 10px; /* Reduce gap to make space fit */
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 30px;
+    }
+
+    .content {
+        position: relative;
+        width: 15%; /* Use percentage for flexible sizing */
+        height: 150px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+        decoration:none;
+    }
+
+    /* Original hover effect */
+    .content:hover {
+        transform: scale(1.2);
+        z-index: 10;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Glow hover effect */
+    .content::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+
+    .content::before {
+        content: "";
+        background: linear-gradient(
+            45deg,
+            #FF7300, #FFFB00, #48FF00,
+            #00FFD5, #002BFF, #FF00C8
+        );
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        background-size: 600%;
+        z-index: -1;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        filter: blur(8px);
+        animation: glowing 20s linear infinite;
+        transition: opacity 0.3s ease-in-out;
+        border-radius: 10px;
+        opacity: 0;
+    }
+
+    .content:hover::before {
+        opacity: 1;
+    }
+
+    /* Glow animation */
+    @keyframes glowing {
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
+    }
+
+    /* Animation and Bubble Styles */
+    .wrapper span {
+        position: fixed;
+        bottom: -180px;
+        height: 50px;
+        width: 50px;
+        z-index: -1;
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff, 0 0 200px #0072ff;
+        animation: animate 5s linear infinite; /* Speed up by reducing time */
+    }
+
+    /* Bubble settings */
+    .wrapper span:nth-child(1) { left: 5%; animation-delay: 0.6s; background-image: url("{% static 'doctor.jpeg' %}"); }
+    .wrapper span:nth-child(2) { left: 10%; animation-delay: 1.5s; width: 60px; height: 60px; background-image: url("{% static 'army.jpg' %}"); }
+    .wrapper span:nth-child(3) { left: 20%; animation-delay: 2s; background-image: url("{% static 'd.jpg' %}"); }
+    .wrapper span:nth-child(4) { left: 30%; animation-delay: 3.5s; width: 80px; height: 80px; background-image: url("{% static 'engineer2.jpg' %}"); }
+    .wrapper span:nth-child(5) { left: 40%; animation-delay: 4s; background-image: url("{% static 'te.jpg' %}"); }
+    .wrapper span:nth-child(6) { left: 50%; animation-delay: 5s; background-image: url("{% static 'business.jpg' %}"); }
+    .wrapper span:nth-child(7) { left: 60%; animation-delay: 2.5s; width: 100px; height: 100px; background-image: url("{% static 'law.jpg' %}"); }
+    .wrapper span:nth-child(8) { left: 70%; animation-delay: 6s; background-image: url("{% static 'nurse.jpg' %}"); }
+    .wrapper span:nth-child(9) { left: 80%; animation-delay: 4.5s; width: 90px; height: 90px; background-image: url("{% static 'plc.jpg' %}"); }
+    .wrapper span:nth-child(10) { left: 90%; animation-delay: 3s; background-image: url("{% static 'scientic.jpg' %}"); }
+
+    @keyframes animate {
+        0% { transform: translateY(0); opacity: 1; }
+        80% { opacity: 0.7; }
+        100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
+    }
+    /* Remove default styles for the anchor inside the button */
+.no-underline {
+    text-decoration: none;  /* Remove underline */
+    color: white;  /* Set color to white */
+}
+
+/* Prevent purple color for visited links */
+.no-underline:visited {
+    color: white;  /* Keep color white for visited links */
+}
+
+</style>
+
+<body>
+    <br>
+    <br>
+    <br>
+    <h1>WELCOME TO OUR WEBSITE</h1>
+    <h2>Explore exciting content about technology, science, healthcare, and arts!!</h2>
+    <h1>CHOOSE YOUR CLASS!!!</h1>
+    <div class="content-container">
+        <button class="content"><a href="/class9thand10th" class="no-underline">Class 9th / 10th</a</button>
+        <button class="content"><a href="/Mathsprediction" class="no-underline">Class 11th / 12th (Mathematics)</a></button>
+        <button class="content"><a href="/Scienceprediction" class="no-underline">Class 11th / 12th (Biology)</a></button>
+        <button class="content"><a href="/Commerceprediction" class="no-underline">Class 11th / 12th (Commerce)</a></button>
+        <button class="content"><a href="/Artsprediction" class="no-underline">Class 11th / 12th (Arts)</a></button>
+        <button class="content"><a href="/prediction" class="no-underline">Technical Student (BTECH/BCA)</a></button>
+
+    </div>
+
+    <!-- Animated Bubbles -->
+    <div class="wrapper">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</body>
+{% endblock body %}

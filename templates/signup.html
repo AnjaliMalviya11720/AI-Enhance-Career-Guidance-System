@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar ul li {
+            position: relative;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: black;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid black;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url("static/Homepagw.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin: 15px 0;
+            border-bottom: 2px solid black;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: black;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        .input-group input {
+            width: 320px;
+            height: 40px;
+            font-size: 16px;
+            color: black;
+            padding: 0 5px;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .input-group input:focus~label,
+        .input-group input:valid~label {
+            top: -5px;
+        }
+
+        button {
+            position: relative;
+            width: 90%;
+            height: 40px;
+            background-color: black;
+            font-size: 16px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            margin-left: 5%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 16px;
+            background-color: rgba(255, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .signUp-link {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .signUp-link p {
+            color: black;
+        }
+
+        .signUp-link p a {
+            color: rgb(254, 4, 75);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signUp-link p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <br> <br> <br> <br> <br> <br> <br> <br>
+
+    <div class="wrapper">
+        <div class="form-wrapper">
+            <form action="/signup" method="POST" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <h2>Sign Up</h2>
+                <div class="input-group">
+                    <input type="text" id="firstname" name="firstname" required>
+                    <label for="">First Name</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="lastname" name="lastname" required>
+                    <label for="">Last Name</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="username" name="username" required>
+                    <label for="">Username</label>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" name="email" required>
+                    <label for="">Email</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" required>
+                    <label for="">Password</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="confirmpassword" name="confirmpassword" required>
+                    <label for="">Confirm Password</label>
+                </div>
+            </div>
+            
+            
+            <button type="submit">Sign Up</button>
+            <div class="error-msg" id="error-msg">
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+                <div class="signUp-link">
+                    <p>Already have an account? <a href="/login" class="signInBtn-link">Sign In</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+{% endblock body %}

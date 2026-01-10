@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% load static %}
+
+{%block title%}prediction{%endblock title%}
+
+{% block body %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #79a7d3, #b29274);
+        margin: 0;
+        padding: 0;
+        color: white; /* White text */
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar ul li {
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+    }
+.hr{
+                   height: 5px;
+                   margin-top: 100px;
+}
+    .form-container {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 30px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 800px;
+        /* margin-top: 100px; */
+        margin: 10px auto 0; /* Adds space between the navbar and form */
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: white;
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        width: 45%;
+        color: white; /* White label text */
+    }
+
+    select {
+        width: 50%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: black; /* Dark select background */
+        color: white; /* White select text */
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color:black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: rgb(127, 182, 186);
+        transform: scale(1.02);
+    }
+    .output-container {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: black; /* Change background color to black */
+        border-radius: 8px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        width: 700px; /* Set a specific width instead of auto */
+        max-width: 100%; /* Optional: ensure it doesn't overflow on smaller screens */
+        margin-left: auto; /* Center the container */
+        margin-right: auto; /* Center the container */
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .wrapper span {
+        position: fixed;
+        bottom: -180px;
+        height: 50px;
+        width: 50px;
+        z-index: -1;
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff, 0 0 200px #0072ff;
+        animation: animate 5s linear infinite; /* Speed up by reducing time */
+    }
+
+    /* Bubble settings */
+    .wrapper span:nth-child(1) { left: 5%; animation-delay: 0.6s; background-image: url("{% static 'doctor.jpeg' %}"); }
+    .wrapper span:nth-child(2) { left: 10%; animation-delay: 1.5s; width: 60px; height: 60px; background-image: url("{% static 'army.jpg' %}"); }
+    .wrapper span:nth-child(3) { left: 20%; animation-delay: 2s; background-image: url("{% static 'd.jpg' %}"); }
+    .wrapper span:nth-child(4) { left: 30%; animation-delay: 3.5s; width: 80px; height: 80px; background-image: url("{% static 'engineer2.jpg' %}"); }
+    .wrapper span:nth-child(5) { left: 40%; animation-delay: 4s; background-image: url("{% static 'te.jpg' %}"); }
+    .wrapper span:nth-child(6) { left: 50%; animation-delay: 5s; background-image: url("{% static 'business.jpg' %}"); }
+    .wrapper span:nth-child(7) { left: 60%; animation-delay: 2.5s; width: 100px; height: 100px; background-image: url("{% static 'law.jpg' %}"); }
+    .wrapper span:nth-child(8) { left: 70%; animation-delay: 6s; background-image: url("{% static 'nurse.jpg' %}"); }
+    .wrapper span:nth-child(9) { left: 80%; animation-delay: 4.5s; width: 90px; height: 90px; background-image: url("{% static 'plc.jpg' %}"); }
+    .wrapper span:nth-child(10) { left: 90%; animation-delay: 3s; background-image: url("{% static 'scientic.jpg' %}"); }
+
+    @keyframes animate {
+        0% { transform: translateY(0); opacity: 1; }
+        80% { opacity: 0.7; }
+        100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
+    }
+    #p {
+        position: absolute;
+        top: 60px; /* Place below the navbar */
+        padding: 10px 20px;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width:100px;
+    }
+
+    #p:hover {
+        background-color: rgb(127, 182, 186);
+    }
+
+    /* Hide Navbar and Print Button During Print */
+    @media print {
+        .navbar {
+            display: none;
+        }
+        #p {
+            display: none;
+        }
+    }
+</style>
+<script>
+        
+    
+    
+    function validateForm() {
+        const selects = document.querySelectorAll('select');
+        for (let select of selects) {
+            if (select.value === "") { // Check if a field is left unselected (empty)
+                alert('Please answer all questions before submitting.');
+                return false; // Prevent form submission
+            }
+        }
+        return true; // Allow form submission
+    }
+    function printForm() {
+        window.print(); // Triggers the browser's print functionality
+    }
+</script>
+
+<br>
+<br>
+<button id="p" onclick="printForm()">Print</button>
+<div class="hr"></div>
+<div class="form-container">
+    <h2>Answer All of the Above Questions</h2>
+    <form action="/Mathsprediction" method="POST" onsubmit="return validateForm();">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="math-confidence">How confident are you in your understanding of Mathematics?</label>
+            <select id="math-confidence" name="math-confidence">
+                <option value="0">Confident</option>
+                <option value="1">Neutral/Somewhat Confident</option>
+                <option value="2">Not Confident</option>
+                <option value="3">Slightly Confident</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="math-performance">How would you rate your performance in subjects related to Mathematics (e.g., Mathematics, Physics, Computer Science)?</label>
+            <select id="math-performance" name="math-performance">
+                <option value="0">Average</option>
+                <option value="1">Below Average</option>
+                <option value="2">Excellent</option>
+                <option value="3">Good</option>
+                <option value="4">Poor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="career-interest-math">How interested are you in pursuing a career in fields that require strong mathematical skills (e.g., Engineering, Data Science, Finance, Research)?</label>
+            <select id="career-interest-math" name="career-interest-math">
+                <option value="0">Interested</option>
+                <option value="1">Neutral/Somewhat Interested</option>
+                <option value="2">Not Interested</option>
+                <option value="3">Slightly Interested</option>
+                <option value="4">Very Interested</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="career-importance-math">How important is a career that involves Mathematics for you?</label>
+            <select id="career-importance-math" name="career-importance-math">
+                <option value="0">Not Important</option>
+                <option value="1">Somewhat Important</option>
+                <option value="2">Very Important</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="problem-solving-skills-math">How do you rate your problem-solving skills in mathematical contexts?</label>
+            <select id="problem-solving-skills-math" name="problem-solving-skills-math">
+                <option value="0">Average</option>
+                <option value="1">Below Average</option>
+                <option value="2">Excellent</option>
+                <option value="3">Good</option>
+                <option value="4">Not Good</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="math-projects">Do you enjoy working on math-related projects or problems?</label>
+            <select id="math-projects" name="math-projects">
+                <option value="0">No</option>
+                <option value="1">Sometimes</option>
+                <option value="2">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="teamwork-preference-math">Do you prefer working in teams for solving math-related problems?</label>
+            <select id="teamwork-preference-math" name="teamwork-preference-math">
+                <option value="0">It depends</option>
+                <option value="1">No</option>
+                <option value="2">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tech-comfort-math">How comfortable are you with using technology or software (e.g., Java, Python, C, etc) for solving mathematical problems?</label>
+            <select id="tech-comfort-math" name="tech-comfort-math">
+                <option value="0">Comfortable</option>
+                <option value="1">Neutral/Somewhat Comfortable</option>
+                <option value="2">Not Comfortable</option>
+                <option value="3">Slightly Comfortable</option>
+            </select>
+        </div>
+
+        <button type="submit">Submit</button>
+        <br>
+        {% if output %}
+        <div class="output-container">
+            Prediction Result: {{ output }}
+        </div>
+        {% endif %}
+        <br><br>
+    </form>
+</div>
+
+
+
+
+                   <br>
+                   <br>
+                   <br>
+                   <div class="wrapper">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+{% endblock body %}

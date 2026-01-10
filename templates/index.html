@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+
+<style>
+    body {
+        height: 100vh; /* Ensure the body takes the full height of the viewport */
+        width: 100%; /* Ensure body takes the full width */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        display: flex; /* Use flexbox for centering content */
+        flex-direction: column; /* Stack elements vertically */
+        justify-content: flex-start; /* Align items from the top */
+        align-items: center; /* Center align the content horizontally */
+        position: relative; /* Ensures navbar stays at the top */
+        overflow: hidden; /* Prevent horizontal scrollbar */
+        background-image: url("static/Homepagw.png");
+        background-size: cover; /* Ensure the background image covers the entire screen */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Prevent the background image from repeating */
+    }
+
+    /* Navbar styling with transparent background */
+    .navbar {
+        position: fixed; /* Make navbar fixed at the top */
+        top: 0;
+        left: 0;
+        width: 100%; /* Ensure navbar spans the full width */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10; /* Keep navbar above other elements */
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar ul li {
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+    }
+
+    /* Main content container styling with transparent background */
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        color: black;
+        margin-top: 120px; /* Ensure content doesn't overlap with navbar */
+        transform: translateX(-100%); /* Start off-screen to the left */
+        animation: slideIn 1s ease-out forwards; /* Apply the sliding effect */
+        display: inline-block; /* Allow the container to shrink-wrap based on content */
+        width:1100px; /* Limit width to 90% of the viewport width */
+        overflow: hidden; /* Hide any content that overflows */
+    }
+
+    /* Typing effect styling */
+    .typing {
+        font-family: 'Courier New', monospace;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 2px solid black;
+        visibility: hidden; /* Hidden initially */
+        animation: typing 3s steps(40, end), blink 0.6s step-end 6; /* Stops blinking after typing ends */
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes typing {
+        from { width: 0; visibility: visible; } /* Becomes visible when typing starts */
+        to { width: 100%; visibility: visible; }
+    }
+
+    @keyframes blink {
+        50% { border-color: transparent; }
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(-100%); /* Start off-screen to the left */
+        }
+        to {
+            transform: translateX(0); /* Slide to the original position */
+        }
+    }
+
+    /* Adjustments to make text in .content-container bold, larger, and black */
+    .p1 {
+        font-size: 48px; /* Larger text */
+        font-weight: bold;
+        color: black; /* Ensure the text is black */
+        margin-bottom: 15px;
+    }
+
+    .p2 {
+        font-size: 30px; /* Larger text */
+        font-weight: bold;
+        color: black; /* Ensure the text is black */
+        margin-bottom: 20px;
+    }
+
+    .p3 {
+        font-size: 36px; /* Larger text */
+        font-weight: bold;
+        color: black; /* Ensure the text is black */
+        margin-bottom: 20px;
+    }
+
+    /* Button styling */
+    .button-container {
+        margin-top: 20px;
+    }
+
+    .button-container a {
+        text-decoration: none;
+    }
+
+    button {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 10px 30px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 2px solid black;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: color 0.4s, background-color 0.4s, box-shadow 0.4s;
+    }
+
+    button:hover {
+        color: white;
+        background-color: black;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Footer styling with transparent background */
+    .footer {
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        color: white;
+        padding: 20px;
+        text-align: center;
+        margin-top: auto; /* Ensure it stays at the bottom */
+        box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+
+    .footer p {
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .footer a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    .footer a:hover {
+        color: #ffcc00;
+    }
+
+    /* Responsive adjustment for smaller screens */
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .navbar ul {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-container {
+            margin-top: 120px; /* Increase margin to ensure spacing on smaller screens */
+        }
+
+        .footer {
+            padding: 10px;
+        }
+        span {
+            color: black;
+        }
+    }
+</style>
+<script type="text/javascript">
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+<main class="body-content">
+    <br>
+    <br>
+    <div class="content-container">
+        <div class="quote">
+            <p class="p1 typing">Choose your Perfect Career</p> 
+            <p class="p2 typing" style="animation-delay: 3s;">with a personalised career Guidance Report</p>
+            <p class="p3 typing" style="animation-delay: 6s;">With <span>ZERO</span> confusion</p>           
+        </div>
+        <div class="button-container">
+            <a href="/class">
+               <button><span>Get Started</span></button>
+            </a>
+        </div>
+    </div>
+</main>
+
+{% endblock body %}

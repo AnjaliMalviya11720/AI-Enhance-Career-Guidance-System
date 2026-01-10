@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!-- Load static files -->
+    {% load static %}
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f7;
+            color: white;
+            display: flex; /* Using flexbox to control layout */
+            flex-direction: column; /* Stack children (navbar, content, footer) vertically */
+            min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.2); /* Transparent black background */
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .navbar .logo {
+            height: 50px; /* Set the desired height of the logo */
+            width: 150px; /* Set the desired width of the logo */
+            background-image: url('{% static "logowwb.png" %}'); /* Logo image applied through CSS */
+            background-size: contain; /* Ensure the image fits within the div */
+            background-repeat: no-repeat; /* Prevent repetition of the image */
+            background-position: center; /* Center the logo image */
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #ffcc00;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Transparent footer styling */
+        .footer {
+            background-color: rgba(0, 0, 0, 0.2); /* Same transparent black background */
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: auto; /* Ensures footer is pushed to the bottom */
+        }
+
+        .footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 15px;
+            border-radius: 10px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .footer .footer-links a:hover {
+            color: #ffcc00;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive layout adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                margin-top: 10px;
+            }
+
+            .footer .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo"></div> <!-- Logo applied via CSS -->
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/chat">Chatbot</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Sign Up&nbsp;&nbsp;</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    {% block body %}{% endblock body %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Career Guidance. All Rights Reserved | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+</body>
+</html>

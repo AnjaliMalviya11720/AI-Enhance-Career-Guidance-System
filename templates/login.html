@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In{% endblock title %}
+
+{% block body %}
+
+<style>
+    .navbar {
+        position: fixed; /* Make navbar fixed at the top */
+        top: 0;
+        left: 0;
+        width: 100%; /* Ensure navbar spans the full width */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10; /* Keep navbar above other elements */
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar ul li {
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid black;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+
+    body {
+        height: 100vh; /* Ensure the body takes the full height of the viewport */
+        width: 100%; /* Ensure body takes the full width */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        display: flex; /* Use flexbox for centering content */
+        flex-direction: column; /* Stack elements vertically */
+        justify-content: flex-start; /* Align items from the top */
+        align-items: center; /* Center align the content horizontally */
+        position: relative; /* Ensures navbar stays at the top */
+        overflow: hidden; /* Prevent horizontal scrollbar */
+        background-image: url("static/Homepagw.png");
+        background-size: cover; /* Ensure the background image covers the entire screen */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Prevent the background image from repeating */
+    }
+
+    .wrapper {
+        position: relative;
+        width: 400px;
+        background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-title {
+        font-size: 30px;
+        font-weight: bold;
+        color: black;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        position: relative;
+        margin: 15px 0;
+        border-bottom: 2px solid #000;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: black;
+        pointer-events: none;
+        transition: 0.5s;
+    }
+
+    .input-group input {
+        width: 320px;
+        height: 40px;
+        font-size: 16px;
+        color: black;
+        padding: 0 5px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .input-group input:focus~label,
+    .input-group input:valid~label {
+        top: -5px;
+    }
+
+    .remember {
+        margin-bottom: 5%;
+        margin-left: 7%;
+    }
+
+    .remember label {
+        color: black;
+        font-size: 14px;
+    }
+
+    .remember label input {
+        accent-color: black;
+    }
+
+    button {
+        position: relative;
+        width: 90%;
+        height: 40px;
+        background-color: black;
+        font-size: 16px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 30px;
+        border: none;
+        outline: none;
+        margin-left: 5%;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 16px;
+        background-color: rgba(255, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    .signup-link {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .signup-link p {
+        color: black;
+    }
+
+    .signup-link p a {
+        color: rgb(254, 4, 75);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .signup-link p a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+<main class="body-content">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="wrapper">
+        <h2 class="login-title">Log In</h2>
+        <form action="/login" method="POST" class="login-form">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <input type="text" id="username" name="username" placeholder="Username" value="" required>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password" value="" required>
+                <label for="password">Password</label>
+            </div>
+
+            <button type="submit">Log In</button>
+
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+        </form>
+
+        <div class="signup-link">
+            <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+        </div>
+    </div>
+</main>
+
+{% endblock body %}
